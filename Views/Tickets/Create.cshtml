@@ -1,0 +1,33 @@
+@model HelpDesk.Models.Ticket
+@{
+    ViewData["Title"] = "ثبت تیکت جدید";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <h2 class="mb-4">ثبت تیکت جدید</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <form asp-controller="Tickets" asp-action="Create" method="post">
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Priority" class="form-label"></label>
+                <select asp-for="Priority" class="form-select">
+                    <option value="کم">کم</option>
+                    <option value="متوسط" selected>متوسط</option>
+                    <option value="بالا">بالا</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">ثبت تیکت</button>
+            <a class="btn btn-secondary" asp-controller="Tickets" asp-action="Index">انصراف</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+@model HelpDesk.Models.Ticket
+@{
+    ViewData["Title"] = "جزئیات تیکت";
+    bool isAdmin = ViewBag.IsAdmin;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-3">تیکت #@Model.Id</h2>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Title</h5>
+                <p class="card-text">@Model.Description</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">اولویت: @Model.Priority</li>
+                    <li class="list-group-item">وضعیت فعلی: <strong>@Model.Status</strong></li>
+                    <li class="list-group-item">تاریخ ثبت: @Model.CreatedAt.ToString("yyyy/MM/dd HH:mm")</li>
+                    @if (isAdmin)
+                    {
+                        <li class="list-group-item">ثبت‌کننده: @(Model.User?.FullName ?? Model.User?.UserName)</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        @if (isAdmin)
+        {
+            <form asp-controller="Tickets" asp-action="UpdateStatus" asp-route-id="@Model.Id" method="post" class="d-flex gap-2">
+                <select name="status" class="form-select">
+                    <option value="باز" selected="@(Model.Status == "باز")">باز</option>
+                    <option value="درحال بررسی" selected="@(Model.Status == "درحال بررسی")">درحال بررسی</option>
+                    <option value="بسته" selected="@(Model.Status == "بسته")">بسته</option>
+                </select>
+                <button type="submit" class="btn btn-primary">به‌روزرسانی وضعیت</button>
+            </form>
+        }
+
+        <a class="btn btn-secondary mt-3" asp-controller="Tickets" asp-action="Index">بازگشت به لیست</a>
+    </div>
+</div>

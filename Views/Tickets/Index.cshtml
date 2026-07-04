@@ -1,0 +1,55 @@
+@model IEnumerable<HelpDesk.Models.Ticket>
+@{
+    ViewData["Title"] = "تیکت‌ها";
+    bool isAdmin = ViewBag.IsAdmin;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>@(isAdmin ? "همه تیکت‌ها" : "تیکت‌های من")</h2>
+    <a class="btn btn-primary" asp-controller="Tickets" asp-action="Create">+ ثبت تیکت جدید</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-secondary">هیچ تیکتی ثبت نشده است.</div>
+}
+else
+{
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>عنوان</th>
+                @if (isAdmin)
+                {
+                    <th>کاربر</th>
+                }
+                <th>اولویت</th>
+                <th>وضعیت</th>
+                <th>تاریخ ثبت</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model)
+            {
+                <tr>
+                    <td>@ticket.Id</td>
+                    <td>@ticket.Title</td>
+                    @if (isAdmin)
+                    {
+                        <td>@(ticket.User?.FullName ?? ticket.User?.UserName)</td>
+                    }
+                    <td>@ticket.Priority</td>
+                    <td>
+                        <span class="badge @(ticket.Status == "بسته" ? "bg-success" : ticket.Status == "درحال بررسی" ? "bg-warning text-dark" : "bg-secondary")">
+                            @ticket.Status
+                        </span>
+                    </td>
+                    <td>@ticket.CreatedAt.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td><a class="btn btn-sm btn-outline-primary" asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id">مشاهده</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

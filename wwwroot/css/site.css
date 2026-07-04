@@ -1,0 +1,10 @@
+:root {
+    --bs-body-bg: #eef2f6;
+}
+
+html,
+body {
+    font-family: Tahoma, Arial, sans-serif;
+    background-color: var(--bs-body-bg);
+    min-height: 100vh;
+}
